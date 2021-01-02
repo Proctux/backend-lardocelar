@@ -11,13 +11,19 @@ ordersRouter.get('/', (request, response) => {
 
 ordersRouter.post('/', async (request, response) => {
     try {
-        const { quantity, date } = request.body;
+        const { quantity, date, comments, food_id, user_id } = request.body;
 
         const parsedDate = parseISO(date);
 
         const createOrder = new CreateOrderService();
 
-        const order = await createOrder.execute({ quantity, date: parsedDate });
+        const order = await createOrder.execute({
+            quantity,
+            date: parsedDate,
+            comments,
+            food_id,
+            user_id,
+        });
 
         return response.json(order);
     } catch (err) {
