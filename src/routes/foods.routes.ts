@@ -1,8 +1,10 @@
 import { Router } from 'express';
 
 import CreateFoodService from '../services/CreateFoodService';
+import ensureAuthenticated from '../middlewares/ensureAuthenticated';
 
 const foodsRouter = Router();
+foodsRouter.use(ensureAuthenticated);
 
 foodsRouter.post('/', async (request, response) => {
     try {

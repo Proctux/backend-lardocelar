@@ -2,8 +2,10 @@ import { Router } from 'express';
 import { parseISO } from 'date-fns';
 
 import CreateOrderService from '../services/CreateOrderService';
+import ensureAuthenticated from '../middlewares/ensureAuthenticated';
 
 const ordersRouter = Router();
+ordersRouter.use(ensureAuthenticated);
 
 ordersRouter.get('/', (request, response) => {
     return response.json({ message: 'Get working' });
