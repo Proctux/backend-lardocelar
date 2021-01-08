@@ -27,6 +27,9 @@ class User {
     @Column('int')
     room_id: string;
 
+    @Column()
+    avatar: string;
+
     @ManyToOne(() => Room)
     @JoinColumn({ name: 'room_id' })
     room: Room;
