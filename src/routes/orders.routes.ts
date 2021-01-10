@@ -3,7 +3,8 @@ import { parseISO } from 'date-fns';
 
 import CreateOrderService from '../services/CreateOrderService';
 import ensureAuthenticated from '../middlewares/ensureAuthenticated';
-import ListOrderMorningAvailabilityService from '../services/ListOrderMorningAvailabilityService';
+import ListOrderBreakFastAvailabilityService from '../services/ListOrderBreakFastAvailabilityService';
+import ListOrderLunchAvailabilityService from '../services/ListOrderLunchAvailabilityService';
 
 const ordersRouter = Router();
 ordersRouter.use(ensureAuthenticated);
@@ -30,16 +31,34 @@ ordersRouter.post('/', async (request, response) => {
     }
 });
 
-ordersRouter.get('/morning-availability', async (request, response) => {
+ordersRouter.get('/breakfast-availability', async (request, response) => {
     try {
         const { year, month, day } = request.query;
 
-        const listOrderDayAvailability = new ListOrderMorningAvailabilityService();
+        const listOrderBreakFastAvailability = new ListOrderBreakFastAvailabilityService();
 
-        const orders = await listOrderDayAvailability.execute({
+        const orders = await listOrderBreakFastAvailability.execute({
             year: Number(year),
             month: Number(month),
             day: Number(day),
+        });
+
+        return response.json(orders);
+    } catch (err) {
+        return response.status(400).json({ error: err.message });
+    }
+});
+
+ordersRouter.get('/lunch-availability', async (request, response) => {
+    try {
+        const { day, month, year } = request.query;
+
+        const listOrderLunchAvailability = new ListOrderLunchAvailabilityService();
+
+        const orders = await listOrderLunchAvailability.execute({
+            day: Number(day),
+            month: Number(month),
+            year: Number(year),
         });
 
         return response.json(orders);
