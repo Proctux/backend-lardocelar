@@ -4,7 +4,10 @@ import {
     Entity,
     CreateDateColumn,
     UpdateDateColumn,
+    ManyToMany,
+    JoinColumn,
 } from 'typeorm';
+import Order from './Order';
 
 @Entity('foods')
 class Food {
@@ -25,6 +28,9 @@ class Food {
 
     @Column()
     image: string;
+
+    @Column()
+    quantity: number;
 
     @CreateDateColumn()
     created_at: Date;
