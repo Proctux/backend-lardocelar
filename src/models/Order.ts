@@ -6,7 +6,6 @@ import {
     UpdateDateColumn,
     ManyToOne,
     JoinColumn,
-    ManyToMany,
 } from 'typeorm';
 
 import User from './User';
@@ -29,7 +28,7 @@ class Order {
     @Column()
     food_id: string;
 
-    @ManyToMany(() => Food)
+    @ManyToOne(() => Food, food => food.id)
     @JoinColumn({ name: 'food_id' })
     food: Food;
 

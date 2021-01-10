@@ -3,6 +3,7 @@ import { startOfHour } from 'date-fns';
 
 import Order from '../models/Order';
 import OrdersRepository from '../repositories/OrdersRepository';
+import RemoveFoodQuantityService from './RemoveFoodQuantityService';
 
 interface Request {
     quantity: number;
@@ -24,9 +25,9 @@ class CreateOrderService {
 
         const ordersRepository = getCustomRepository(OrdersRepository);
 
-        const findOrders = await ordersRepository.findOrders(orderDate);
+        const findOrders = await ordersRepository.findOrdersByDate(orderDate);
 
-        if (findOrders && findOrders.length >= 10) {
+        if (findOrders && findOrders.length >= 5) {
             throw new Error('No more orders are available for this time');
         }
 
@@ -37,6 +38,10 @@ class CreateOrderService {
             food_id,
             user_id,
         });
+
+        const removeFoodQuantity = new RemoveFoodQuantityService();
+
+        await removeFoodQuantity.execute({ food_id, quantity });
 
         await ordersRepository.save(order);
 
