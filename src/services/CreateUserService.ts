@@ -2,6 +2,7 @@ import { getRepository } from 'typeorm';
 import { hash } from 'bcrypt';
 
 import User from '../models/User';
+import SetRoomBusyService from './SetRoomBusyService';
 
 interface Request {
     name: string;
@@ -18,6 +19,7 @@ class CreateUserService {
         room_id,
     }: Request): Promise<User> {
         const usersRepository = getRepository(User);
+        const setRoomBusy = new SetRoomBusyService();
 
         const checkUserExists = await usersRepository.findOne({
             where: { email },
@@ -37,6 +39,7 @@ class CreateUserService {
         });
 
         await usersRepository.save(user);
+        await setRoomBusy.execute({ room_id });
 
         return user;
     }

@@ -34,6 +34,8 @@ class OrdersRepository extends Repository<Order> {
             relations: ['food'],
         });
 
+        console.log(orders);
+
         return orders;
     }
 }

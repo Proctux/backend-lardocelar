@@ -14,7 +14,7 @@ interface Response {
     available: boolean;
 }
 
-class ListOrderDayAvailabilityService {
+class ListOrderBreakFastAvailabilityService {
     public async execute({ day, month, year }: Request): Promise<Response[]> {
         const ordersRepository = getCustomRepository(OrdersRepository);
 
@@ -27,7 +27,7 @@ class ListOrderDayAvailabilityService {
         const initialHour = 7;
 
         const eachHourArray = Array.from(
-            { length: 3 },
+            { length: 4 },
             (_, index) => index + initialHour,
         );
 
@@ -52,4 +52,4 @@ class ListOrderDayAvailabilityService {
     }
 }
 
-export default ListOrderDayAvailabilityService;
+export default ListOrderBreakFastAvailabilityService;

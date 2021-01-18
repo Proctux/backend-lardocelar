@@ -4,10 +4,7 @@ import {
     Entity,
     CreateDateColumn,
     UpdateDateColumn,
-    ManyToMany,
-    JoinColumn,
 } from 'typeorm';
-import Order from './Order';
 
 @Entity('foods')
 class Food {
