@@ -20,6 +20,9 @@ class Room {
     @Column('boolean')
     vip: boolean;
 
+    @Column()
+    image: string;
+
     @CreateDateColumn()
     created_at: Date;
 
