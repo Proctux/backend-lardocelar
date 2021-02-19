@@ -4,9 +4,10 @@ import { sign } from 'jsonwebtoken';
 
 import User from '../models/User';
 import authConfig from '../config/auth';
+import Employee from '../models/Employee';
 
 interface Response {
-    user: User;
+    user: User | Employee;
     token: string;
 }
 
@@ -18,11 +19,20 @@ interface Request {
 class AuthenticateUserService {
     public async execute({ email, password }: Request): Promise<Response> {
         const usersRepository = getRepository(User);
+        const employeeRepository = getRepository(Employee);
 
-        const user = await usersRepository.findOne({ where: { email } });
+        let user;
+
+        user = await usersRepository.findOne({ where: { email } });
 
         if (!user) {
-            throw new Error('Incorrect email/password combination');
+            user = await employeeRepository.findOne({
+                where: { email },
+            });
+
+            if (!user) {
+                throw new Error('Incorrect email/password combination');
+            }
         }
 
         const matchedPassword = await compare(password, user.password);
